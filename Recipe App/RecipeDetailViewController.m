@@ -40,6 +40,33 @@ static CGFloat margin = 15;
     description.numberOfLines = 0;
     [scrollView addSubview:description];
     
+    CGFloat top = topMargin + heightForDescription + margin *2;
+    
+    UILabel *ingredientsTitle = [[UILabel alloc] initWithFrame: CGRectMake(margin, top, self.view.frame.size.width - 2 *margin, 20)];
+    ingredientsTitle.text = @"ingredients";
+    ingredientsTitle.font = [UIFont boldSystemFontOfSize:17];
+    // add title
+    [scrollView addSubview:ingredientsTitle];
+    
+    top += 20+margin;
+    
+    for (int i = 0; i < [RARecipes ingredientCountAtIndex:self.recipeIndex]; i++) {
+        
+        UILabel *volume = [[UILabel alloc] initWithFrame:CGRectMake(margin, top, (self.view.frame.size.width - 2 * margin) /4, 20)];
+        volume.font = [UIFont boldSystemFontOfSize:17];
+        volume.text = [RARecipes ingredientVolumeAtIndex:i inRecipeAtIndex:self.recipeIndex];
+        
+        [scrollView addSubview:volume];
+        // only adding the volumeLabel to the subView, not to self
+        
+        UILabel *type = [[UILabel alloc] initWithFrame:CGRectMake(margin + (self.view.frame.size.width - 2 * margin) /4, top,(self.view.frame.size.width - 2 * margin) * 3 /4, 20)];
+        type.numberOfLines = 0;
+        type.font = [UIFont systemFontOfSize:15];
+        type.text = [RARecipes ingredientTypeAtIndex:i inRecipeAtIndex:self.recipeIndex];
+        
+        [scrollView addSubview:type];
+    }
+    
     
 }
 
@@ -48,14 +75,23 @@ static CGFloat margin = 15;
     // Dispose of any resources that can be recreated.
 }
 
-/*
-#pragma mark - Navigation
+- (CGFloat) heightForDescription: (NSString *)description {
+    
+    CGRect bounding = [description boundingRectWithSize:CGSizeMake(self.view.frame.size.width - 2 * margin - 40, CGFLOAT_MAX)
+                                                options:NSStringDrawingUsesLineFragmentOrigin
+                                             attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:17]}
+                                                context:nil];
+    
+    return bounding.size.height;
 
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
 }
-*/
+
+-(CGFloat) heightForDirections: (NSString *)description {
+    CGRect bounding = [description boundingRectWithSize:CGSizeMake(self.view.frame.size.width - 2 * margin - 40, CGFLOAT_MAX)
+                                                options:NSStringDrawingUsesLineFragmentOrigin
+                                             attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:17]} context:nil];
+    
+    return bounding.size.height;
+}
 
 @end
